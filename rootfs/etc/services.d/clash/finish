@@ -1,0 +1,21 @@
+#!/usr/bin/env bashio
+# ==============================================================================
+# 当Clash服务失败时关闭S6监督树
+# s6-overlay文档: https://github.com/just-containers/s6-overlay
+# ==============================================================================
+
+declare APP_EXIT_CODE=${1}
+
+if [[ "${APP_EXIT_CODE}" -ne 0 ]] && [[ "${APP_EXIT_CODE}" -ne 256 ]]; then
+  bashio::log.warning "终止插件，退出代码 ${APP_EXIT_CODE}"
+  echo "${APP_EXIT_CODE}" > /run/s6-linux-init-container-results/exitcode
+  exec /run/s6/basedir/bin/halt
+fi
+
+# 如果启用了自动清理，则删除配置文件
+if bashio::config.true 'auto_cleanup'; then
+  bashio::log.info "清理Clash配置文件..."
+  rm -f /opt/clash/config/config.yaml
+fi
+
+bashio::log.info "服务在关闭后重新启动" 

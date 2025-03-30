@@ -1,0 +1,45 @@
+worker_processes  1;
+pid /var/run/nginx.pid;
+error_log /var/log/nginx/error.log;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include            mime.types;
+    default_type       application/octet-stream;
+    sendfile           on;
+    keepalive_timeout  65;
+    server_tokens      off;
+    
+    access_log         /var/log/nginx/access.log;
+    
+    # 外部访问UI
+    server {
+        listen {{ .interface }}:7890;
+        
+        location / {
+            proxy_pass http://127.0.0.1:9090;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+
+    # HA Ingress支持
+    server {
+        listen {{ .ingress_port }} default_server;
+        
+        location / {
+            root /opt/clash/dashboard;
+            index index.html;
+            try_files $uri $uri/ /index.html;
+        }
+        
+        location /api/ {
+            proxy_pass http://127.0.0.1:9090/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+} 

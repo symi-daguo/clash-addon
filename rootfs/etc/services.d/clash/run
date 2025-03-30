@@ -1,0 +1,25 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# 启动Clash代理服务
+# s6-overlay文档: https://github.com/just-containers/s6-overlay
+# ==============================================================================
+
+# 声明变量
+declare subscription_type
+declare subscription_url
+
+# 从用户配置选项中获取订阅类型和URL
+subscription_type=$(bashio::config 'subscription_type')
+subscription_url=$(bashio::config 'subscription_url')
+
+bashio::log.info "Starting Proxy Service with ${subscription_type} subscription"
+
+# 等待配置文件准备就绪
+while [ ! -f /opt/clash/config/config.yaml ]; do
+    bashio::log.info "Waiting for configuration file..."
+    sleep 2
+done
+
+# 启动Clash
+cd /opt/clash || exit 1
+exec /opt/clash/clash -d /opt/clash/config 

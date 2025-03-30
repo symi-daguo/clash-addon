@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# 启动代理服务初始化程序
+# s6-overlay docs: https://github.com/just-containers/s6-overlay
+# ==============================================================================
+
+# 运行主程序，准备配置文件
+bashio::log.info "初始化代理服务..."
+exec /usr/bin/proxy-service

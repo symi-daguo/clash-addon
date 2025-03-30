@@ -1,0 +1,35 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
+name: "Proxy Service"
+version: "1.0.0"
+slug: "proxy-service"
+description: "提供临时代理服务，用于Home Assistant远程升级和访问"
+url: "https://github.com/symi-daguo/clash-addon"
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+init: false
+ports:
+  7890/tcp: 7890
+  7891/tcp: 7891
+map:
+  - share:rw
+options:
+  subscription_type: "clash"
+  subscription_url: ""
+  auto_cleanup: true
+schema:
+  subscription_type: "list(clash|shadowrocket)"
+  subscription_url: "str"
+  auto_cleanup: "bool"
+image: "ghcr.io/symi-daguo/{arch}-addon-proxy-service"
+webui: "http://[HOST]:[PORT:7890]/ui"
+ingress: true
+ingress_port: 9090
+panel_icon: "mdi:satellite-uplink"
+panel_title: "代理服务"
+stage: "experimental"
+startup: "services"
+boot: "auto"
