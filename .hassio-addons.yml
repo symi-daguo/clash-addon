@@ -3,4 +3,5 @@ addons:
   proxy-service:
     repository: symi-daguo/clash-addon
     target: proxy-service
-    image: ghcr.io/symi-daguo/{arch}-addon-proxy-service 
+    image: ghcr.io/symi-daguo/{arch}-addon-proxy-service
+    version: latest 

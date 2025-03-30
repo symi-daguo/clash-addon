@@ -11,6 +11,7 @@ arch:
   - amd64
   - i386
 init: false
+host_network: false
 ports:
   7890/tcp: 7890
   7891/tcp: 7891
@@ -30,6 +31,6 @@ ingress: true
 ingress_port: 9090
 panel_icon: "mdi:satellite-uplink"
 panel_title: "代理服务"
-stage: "experimental"
+stage: "stable"
 startup: "services"
 boot: "auto"

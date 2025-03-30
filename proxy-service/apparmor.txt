@@ -26,7 +26,11 @@ profile proxy-service flags=(attach_disconnected,mediate_deleted) {
 
   # 访问插件内的文件和选项
   /data/** rw,
+  /share/** rw,
 
+  # 网络访问权限
+  network,
+  
   # Nginx配置和日志
   /etc/nginx/** rw,
   /var/log/nginx/** rwk,

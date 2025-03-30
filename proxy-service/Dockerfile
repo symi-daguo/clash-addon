@@ -4,6 +4,7 @@ FROM $BUILD_FROM
 
 # 设置环境变量
 ENV LANG C.UTF-8
+ENV PATH="/usr/local/bin:${PATH}"
 
 # 安装依赖
 RUN apk add --no-cache \
@@ -33,27 +34,25 @@ RUN mkdir -p /opt/clash/dashboard \
     && cp -r /tmp/clash-dashboard-gh-pages/* /opt/clash/dashboard/ \
     && rm -rf /tmp/dashboard.zip /tmp/clash-dashboard-gh-pages
 
-# Execute during the build of the image
+# 执行在构建镜像期间的命令
 ARG TEMPIO_VERSION BUILD_ARCH
 RUN \
     curl -sSLf -o /usr/bin/tempio \
-    "https://github.com/home-assistant/tempio/releases/download/${TEMPIO_VERSION}/tempio_${BUILD_ARCH}"
+    "https://github.com/home-assistant/tempio/releases/download/${TEMPIO_VERSION}/tempio_${BUILD_ARCH}" \
+    && chmod +x /usr/bin/tempio
 
-# Copy root filesystem
+# 复制根文件系统
 COPY rootfs /
 
 # 创建必要的目录
-RUN mkdir -p /var/log/nginx
+RUN mkdir -p /var/log/nginx /data /share \
+    && chmod -R 755 /var/log/nginx /data /share
 
 # 为命令文件添加可执行权限
-RUN chmod a+x /etc/services.d/clash/run \
-    && chmod a+x /etc/services.d/clash/finish \
-    && chmod a+x /etc/services.d/nginx/run \
-    && chmod a+x /etc/services.d/nginx/finish \
-    && chmod a+x /etc/services.d/init/run \
-    && chmod a+x /etc/services.d/init/finish \
-    && chmod a+x /usr/bin/proxy-service \
-    && chmod a+x /etc/cont-init.d/init.sh
+RUN find /etc/services.d -type f -name run -exec chmod a+x {} \; \
+    && find /etc/services.d -type f -name finish -exec chmod a+x {} \; \
+    && find /etc/cont-init.d -type f -exec chmod a+x {} \; \
+    && chmod a+x /usr/bin/proxy-service
 
 # 添加标签
 LABEL \
@@ -62,4 +61,7 @@ LABEL \
     io.hass.version="${BUILD_VERSION}" \
     io.hass.type="addon" \
     io.hass.arch="${BUILD_ARCH}" \
-    maintainer="symi-daguo <example@example.com>"
+    maintainer="symi-daguo <303316404@qq.com>"
+
+WORKDIR /
+ENTRYPOINT ["/init"]
