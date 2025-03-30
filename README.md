@@ -1,31 +1,18 @@
-# Home Assistant代理服务插件
+# Home Assistant 代理服务插件仓库
 
-这个Home Assistant插件提供临时代理服务，用于Home Assistant远程升级和访问。
+[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsymi-daguo%2Fclash-addon)
 
-## 功能
+## 关于
 
-- 支持Clash和Shadowrocket格式的代理订阅
-- 提供HTTP(7890)和SOCKS5(7891)代理服务
-- 通过Home Assistant界面直接访问代理控制面板
-- 自动清理配置选项，确保安全
+这个仓库包含了Home Assistant的代理服务插件，提供临时代理服务用于远程升级和访问。
 
-## 使用方法
+### 插件
 
-1. 在Home Assistant中添加此插件仓库：`https://github.com/symi-daguo/clash-addon`
-2. 安装"Proxy Service"插件
-3. 配置你的订阅地址（支持Clash和Shadowrocket格式）
-4. 启动服务
+- [代理服务](./proxy-service/README.md): 提供基于Clash的HTTP和SOCKS5代理服务，支持多种订阅格式。
 
-## 配置选项
+## 安装
 
-| 选项 | 描述 |
-|------|------|
-| `subscription_type` | 订阅类型（clash或shadowrocket） |
-| `subscription_url` | 订阅地址URL |
-| `auto_cleanup` | 停止服务时自动清理配置 |
-
-## 注意事项
-
-- 此插件仅用于临时代理服务，不建议长期运行
-- 请确保使用合法的代理服务
-- 2025年3月版本，使用Clash v2.3.8内核
+1. 在Home Assistant中点击上方的"添加到Home Assistant"按钮，或手动添加仓库URL: `https://github.com/symi-daguo/clash-addon`
+2. 在"插件商店"中找到"代理服务"插件并安装
+3. 配置您的订阅信息
+4. 启动插件 
