@@ -1,0 +1,9 @@
+# 忽略脚本文件的Dockerfile语法检查
+rootfs/usr/bin/proxy-service
+rootfs/etc/cont-init.d/init.sh
+rootfs/etc/services.d/clash/run
+rootfs/etc/services.d/clash/finish
+rootfs/etc/services.d/nginx/run
+rootfs/etc/services.d/nginx/finish
+rootfs/etc/services.d/init/run
+rootfs/etc/services.d/init/finish 
